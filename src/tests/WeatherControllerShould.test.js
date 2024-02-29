@@ -2,35 +2,34 @@ const WeatherController = require('../controllers/WeatherController');
 const WeatherService = require('../services/WeatherService');
 
 describe('WeatherController', () => {
-  let mockWeatherService;
-  let weatherController;
+    let weatherController
+    let weatherService
+    const res = { json: jest.fn() }
+    const next  = jest.fn()
 
-  const res = { json: jest.fn() };
-  const next = jest.fn();
+    beforeEach(()=>{
+        weatherService = new WeatherService()
+        weatherController = new WeatherController(weatherService)
+    })
 
-  beforeEach(() => {
-    mockWeatherService = new WeatherService();
-    weatherController = new WeatherController(mockWeatherService);
-  });
+    it('should call weather service getWeatherByZipcode with correct zipcode', async() => {
+        const req = { params: { zipcode:'12345'} }
+        weatherService.getWeatherByZipcode = jest.fn().mockResolvedValue({})
+        await weatherController.getWeatherByZipcode(req,res,next)
+        expect(weatherService.getWeatherByZipcode).toHaveBeenCalledWith('12345')
+    })
 
-  it('should call weatherService.getWeatherByZipcode with correct zipcode', async () => {
-    mockWeatherService.getWeatherByZipcode = jest.fn().mockResolvedValue({});
-    const req = { params: { zipcode: '12345' } };
-    await weatherController.getWeatherByZipcode(req, res, next);
-    expect(mockWeatherService.getWeatherByZipcode).toHaveBeenCalledWith('12345');
-  });
+    it('should call weather serive getWeatherByCity with correct city', async() =>{
+        const req = { params: { city: 'Schenectady'} }
+        weatherService.getWeatherByCity = jest.fn().mockResolvedValue({})
+        await weatherController.getWeatherByCity(req, res, next)
+        expect(weatherService.getWeatherByCity).toHaveBeenCalledWith('Schenectady')
+    })
 
-  it('should call weatherService.getWeatherByCity with correct city name', async () => {
-    mockWeatherService.getWeatherByCity = jest.fn().mockResolvedValue({});
-    const req = { params: { city: 'Delhi' } };
-    await weatherController.getWeatherByCity(req, res, next);
-    expect(mockWeatherService.getWeatherByCity).toHaveBeenCalledWith('Delhi');
-  });
-
-  it('should call weatherService.getWeatherByCountry with correct country name', async () => {
-    mockWeatherService.getWeatherByCountry = jest.fn().mockResolvedValue({});
-    const req = { params: { country: 'USA' } };
-    await weatherController.getWeatherByCountry(req, res, next);
-    expect(mockWeatherService.getWeatherByCountry).toHaveBeenCalledWith('USA');
-  });
+    it('should call weather service getWeatherByCountry with correct country', async() => {
+        const req = { params: {country: 'USA'} }
+        weatherService.getWeatherByCountry = jest.fn().mockResolvedValue({})
+        await weatherController.getWeatherByCountry(req, res, next)
+        expect(weatherService.getWeatherByCountry).toHaveBeenCalledWith('USA')
+    })
 });

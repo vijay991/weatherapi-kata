@@ -13,9 +13,9 @@ app.use(express.json());
 const weatherService = new WeatherService(process.env.WEATHER_API_API_KEY);
 const weatherController = new WeatherController(weatherService);
 
-app.get('/weather/zip/:zipcode', weatherController.getWeatherByZipcode.bind(weatherController));
+app.get('/weather/zipcode/:zipcode', weatherController.getWeatherByZipcode.bind(weatherController));
 app.get('/weather/city/:city', weatherController.getWeatherByCity.bind(weatherController));
-app.get('/weather/country/:country', weatherController.getWeatherByCountry.bind(weatherController));
+app.get('/weather/country/:country', weatherController.getWeatherByCountry.bind(weatherController))
 
 
 app.listen(PORT, () => {
